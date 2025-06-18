@@ -18,15 +18,8 @@ namespace FUNewsManagement_Web_API.Controllers
         [HttpPost]
         public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest request)
         {
-            try
-            {
                 var token = await _service.LoginAsync(request);
                 return Ok(token);
-            } catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-       
+        } 
     }
 }

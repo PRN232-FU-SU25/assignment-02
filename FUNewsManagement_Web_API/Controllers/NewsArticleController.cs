@@ -12,6 +12,7 @@ using System.Security.Claims;
 
 namespace FUNewsManagement_Web_API.Controllers
 {
+    [Authorize(Roles = "0")]
     [Route("api/[controller]")]
     [ApiController]
     public class NewsArticleController : ControllerBase
@@ -24,7 +25,7 @@ namespace FUNewsManagement_Web_API.Controllers
             _systemAccountService = systemAccountService;
 
         }
-
+        [Authorize(Roles = "Staff")]
         [HttpGet]
         [EnableQuery]
         public async Task<ActionResult<TResponse<NewsArticleResponse>>> GetAll()
@@ -33,6 +34,7 @@ namespace FUNewsManagement_Web_API.Controllers
             var res = new TResponse<List<NewsArticleResponse>>("get news list success", news);
             return Ok(res);
         }
+        [Authorize(Roles = "Staff")]
         [HttpGet("{id}")]
         public async Task<ActionResult<TResponse<NewsArticleResponse>>> GetById(string id)
         {
@@ -40,7 +42,7 @@ namespace FUNewsManagement_Web_API.Controllers
             var res = new TResponse<NewsArticleResponse>("get news success", news);
             return Ok(res);
         }
-        [Authorize]
+        [Authorize(Roles = "Staff")]
         [HttpPost]
         public async Task<ActionResult<TResponse<NewsArticleResponse>>> CreateNews([FromBody] NewsArticleRequest request)
         {
@@ -49,6 +51,7 @@ namespace FUNewsManagement_Web_API.Controllers
             var res = new TResponse<NewsArticleResponse>("news created", news);
             return Ok(res);
         }
+        [Authorize(Roles = "Staff")]
         [HttpPut("{id}")] 
         public async Task<ActionResult<TResponse<NewsArticleResponse>>> UpdateNews(string id,[FromBody] NewsArticleRequest request)
         {
@@ -56,7 +59,8 @@ namespace FUNewsManagement_Web_API.Controllers
             var res = new TResponse<NewsArticleResponse>("news updated", news);
             return Ok(res);
         }
-          [HttpDelete("{id}")]
+        [Authorize(Roles = "Staff")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<string>> DeleteCategory(string id)
         {
             var result = await _newsArticleService.DeleteNewsArticleAsync(id);

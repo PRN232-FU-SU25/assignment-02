@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -19,7 +20,7 @@ namespace FUNewsManagement_Web_API.Controllers
         {
             _service = service; 
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [EnableQuery]
         public async Task<ActionResult<TResponse<List<AccountResponse>>>> GetAll()
@@ -28,6 +29,7 @@ namespace FUNewsManagement_Web_API.Controllers
             var res = new TResponse<List<AccountResponse>>("lấy danh sách tài khoản thành công", accs);
             return Ok(res);
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<TResponse<AccountResponse>>> GetById(short id)
         {
@@ -35,6 +37,7 @@ namespace FUNewsManagement_Web_API.Controllers
             var res = new TResponse<AccountResponse>("lấy thông tin tài khoản thành công", acc);
             return Ok(res);
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<TResponse<AccountResponse>>> CreateAccount([FromBody] AccountRequest req)
         {
@@ -42,6 +45,7 @@ namespace FUNewsManagement_Web_API.Controllers
             var res = new TResponse<AccountResponse>("tạo tài khoản thành công", acc);
              return Ok(res);
         }
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<string>> DeleteAccount(short id)
         {
@@ -52,6 +56,7 @@ namespace FUNewsManagement_Web_API.Controllers
 
             return Ok(result.Message);
         }
+        [Authorize(Roles = "Admin")]
         [HttpPut("id")]
         public async Task<ActionResult<TResponse<AccountResponse>>> UpdateAccount(short id, [FromBody] AccountRequest reqs)
         {
@@ -60,6 +65,5 @@ namespace FUNewsManagement_Web_API.Controllers
             return Ok(res);
         }
     }
-
 }
 

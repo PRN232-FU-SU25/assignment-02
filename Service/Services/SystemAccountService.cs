@@ -23,7 +23,7 @@ namespace Services.Services
             _jwtTokenService = jwtTokenService;
             _mapper = mapper;
         }
-
+        
         public async Task<AccountResponse> CreateAsync(AccountRequest dto)
         {
             short id = (short) await _systemAccountRepo.CountAsync();
@@ -58,7 +58,7 @@ namespace Services.Services
             var acc = await _systemAccountRepo.GetAccountByUsername(username);
             if(acc == null)
             {
-                throw new Exception("user not found");
+                throw new KeyNotFoundException("user not found");
             }
             return acc;
         }
@@ -68,7 +68,7 @@ namespace Services.Services
             var account = await _systemAccountRepo.GetAccountById(id);
             if (account == null)
             {
-                throw new Exception("không tìm thấy tài khoản");
+                throw new KeyNotFoundException("user not found");
             }
             var res = _mapper.Map<AccountResponse>(account);
             return res;
@@ -90,7 +90,7 @@ namespace Services.Services
 
             if (user == null || user.AccountPassword != request.password)
             {
-                throw new Exception("Sai tài khoản hoặc mật khẩu");
+                throw new ArgumentException("Sai tài khoản hoặc mật khẩu");
             }
             var token = _jwtTokenService.GenerateToken(user);
             var acc = _mapper.Map<AccountResponse>(user);
@@ -106,7 +106,7 @@ namespace Services.Services
             var account = await _systemAccountRepo.GetAccountById(id);
             if (account == null)
             {
-                throw new Exception("không tìm thấy tài khoản");
+                throw new KeyNotFoundException("không tìm thấy tài khoản");
             }
             account.AccountEmail = dto.AccountEmail;
             account.AccountPassword = dto.AccountPassword;
