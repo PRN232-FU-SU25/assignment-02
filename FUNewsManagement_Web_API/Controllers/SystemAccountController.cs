@@ -29,7 +29,7 @@ namespace FUNewsManagement_Web_API.Controllers
             var res = new TResponse<List<AccountResponse>>("lấy danh sách tài khoản thành công", accs);
             return Ok(res);
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<TResponse<AccountResponse>>> GetById(short id)
         {
@@ -57,7 +57,7 @@ namespace FUNewsManagement_Web_API.Controllers
             return Ok(result.Message);
         }
         [Authorize(Roles = "Admin")]
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public async Task<ActionResult<TResponse<AccountResponse>>> UpdateAccount(short id, [FromBody] AccountRequest reqs)
         {
             var acc = await _service.UpdateAsync(id, reqs);

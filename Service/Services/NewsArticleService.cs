@@ -63,15 +63,30 @@ namespace Services.Services
             return res;
         }
 
-        public async  Task<NewsArticleResponse> UpdateNewsArticleAsync(string id ,NewsArticleRequest NewsArticle)
+		public async Task<List<NewsArticleResponse>> GetActiveQueryable()
+		{
+			var accs = await _newsArticleRepo.GetActiveQueryable();
+			var list = await accs.ToListAsync();
+			var res = _mapper.Map<List<NewsArticleResponse>>(list);
+			return res;
+		}
+
+		public async  Task<NewsArticleResponse> UpdateNewsArticleAsync(string id ,NewsArticleRequest NewsArticle)
         {
             var news = await _newsArticleRepo.GetNewsArticleById(id);
             if (news == null)
             {
                 throw new Exception("NewsArticle not found");
             }
-            _mapper.Map(news, NewsArticle);
-            await _newsArticleRepo.UpdateAsync(news);
+
+            news.NewsTitle = NewsArticle.NewsTitle;
+            news.Headline = NewsArticle.Headline;
+            news.NewsContent = NewsArticle.NewsContent;
+            news.NewsSource = NewsArticle.NewsSource;
+            news.CategoryId = NewsArticle.CategoryId;
+            news.NewsStatus = NewsArticle.NewsStatus;
+
+			await _newsArticleRepo.UpdateAsync(news);
             var res =  _mapper.Map<NewsArticleResponse>(news);
             return res;
         }

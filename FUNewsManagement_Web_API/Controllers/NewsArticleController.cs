@@ -12,7 +12,6 @@ using System.Security.Claims;
 
 namespace FUNewsManagement_Web_API.Controllers
 {
-    [Authorize(Roles = "0")]
     [Route("api/[controller]")]
     [ApiController]
     public class NewsArticleController : ControllerBase
@@ -34,7 +33,16 @@ namespace FUNewsManagement_Web_API.Controllers
             var res = new TResponse<List<NewsArticleResponse>>("get news list success", news);
             return Ok(res);
         }
-        [Authorize(Roles = "Staff")]
+
+		[HttpGet("active")]
+		[EnableQuery]
+		public async Task<ActionResult<TResponse<NewsArticleResponse>>> GetAllActive()
+		{
+			var news = await _newsArticleService.GetActiveQueryable();
+			var res = new TResponse<List<NewsArticleResponse>>("get news list success", news);
+			return Ok(res);
+		}
+		[Authorize(Roles = "Staff")]
         [HttpGet("{id}")]
         public async Task<ActionResult<TResponse<NewsArticleResponse>>> GetById(string id)
         {

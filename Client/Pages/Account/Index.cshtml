@@ -1,0 +1,121 @@
+﻿@page
+@model AccountIndexModel
+@{
+    ViewData["Title"] = "Danh sách Tài khoản";
+}
+
+<h3>@ViewData["Title"]</h3>
+<a asp-page="Create" class="btn btn-success mb-2">Tạo mới</a>
+
+<table class="table table-bordered table-sm">
+    <thead class="table-light">
+        <tr>
+            <th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var a in Model.Accounts)
+    {
+        <tr>
+            <td>@a.AccountId</td>
+            <td>@a.AccountName</td>
+            <td>@a.AccountEmail</td>
+            <td>
+                @(a.AccountRole switch {
+                    0 => "Admin",
+                    1 => "Staff",
+                    2 => "Lecturer",
+                    _ => "Unknown"
+                })
+            </td>
+            <td>
+                <a asp-page="Index" asp-route-editId="@a.AccountId"
+                   class="btn btn-primary btn-sm">Sửa</a>
+
+                @* Chỉ cho xóa nếu không phải Admin *@
+                @if (a.AccountRole != 0)
+                {
+                    <a asp-page="Index" asp-route-deleteId="@a.AccountId"
+                       class="btn btn-danger btn-sm">Xóa</a>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@* --- Popup Edit --- *@
+@if (Model.ShowEditModal)
+{
+    <div class="modal fade show" style="display:block;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sửa Tài khoản @Model.EditId</h5>
+                    <a asp-page="Index" class="btn-close"></a>
+                </div>
+                <div class="modal-body">
+                    <form method="post"
+                          asp-page-handler="Edit"
+                          asp-route-editId="@Model.EditId">
+                        <div class="mb-3">
+                            <label asp-for="Input.AccountName" class="form-label"></label>
+                            <input asp-for="Input.AccountName" class="form-control" />
+                            <span asp-validation-for="Input.AccountName"
+                                  class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.AccountEmail" class="form-label"></label>
+                            <input asp-for="Input.AccountEmail" class="form-control" />
+                            <span asp-validation-for="Input.AccountEmail"
+                                  class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.AccountRole" class="form-label"></label>
+                            <select asp-for="Input.AccountRole"
+                                    class="form-select"
+                                    asp-items="Model.RoleOptions">
+                                <option value="">-- Chọn vai trò --</option>
+                            </select>
+                            <span asp-validation-for="Input.AccountRole"
+                                  class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        <a asp-page="Index" class="btn btn-secondary">Hủy</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@* --- Popup Delete --- *@
+@if (Model.ShowDeleteModal)
+{
+    <div class="modal fade show" style="display:block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xóa Tài khoản @Model.DeleteId</h5>
+                    <a asp-page="Index" class="btn-close"></a>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc muốn xóa tài khoản @Model.DeleteId kkhông?
+                    </p>
+                    <form method="post"
+                          asp-page-handler="Delete"
+                          asp-route-deleteId="@Model.DeleteId">
+                        <button type="submit" class="btn btn-danger">Xóa</button>
+                        <a asp-page="Index" class="btn btn-secondary">Hủy</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

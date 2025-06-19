@@ -1,0 +1,18 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Đăng nhập";
+}
+<form method="post" class="w-50 mx-auto">
+    <h3>@ViewData["Title"]</h3>
+    <div class="mb-3">
+        <label asp-for="Input.username" class="form-label">Email</label>
+        <input asp-for="Input.username" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.password" class="form-label">Mật khẩu</label>
+        <input asp-for="Input.password" type="password" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+    <p class="text-danger mt-2">@Model.ErrorMessage</p>
+</form>

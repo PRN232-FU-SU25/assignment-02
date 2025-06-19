@@ -12,7 +12,8 @@ namespace Services.IService
     public interface INewsArticleService 
     {
         Task<List<NewsArticleResponse>> GetQueryable();
-        Task<NewsArticleResponse> GetByIdAsync(string id);
+        Task<List<NewsArticleResponse>> GetActiveQueryable();
+		Task<NewsArticleResponse> GetByIdAsync(string id);
         Task<NewsArticleResponse> AddNewsArticleAsync(SystemAccount acc ,NewsArticleRequest NewsArticle);
         Task<NewsArticleResponse> UpdateNewsArticleAsync(string id,NewsArticleRequest NewsArticle);
         Task<(bool Success, string Message)> DeleteNewsArticleAsync(string id);

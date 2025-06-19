@@ -13,5 +13,6 @@ namespace Repository.IRepository
         Task<int> CountAsync();
         Task Delete(NewsArticle acc);
         Task<IQueryable<NewsArticle>> GetQueryable();
-    }
+        Task<IQueryable<NewsArticle>> GetActiveQueryable();
+	}
 }

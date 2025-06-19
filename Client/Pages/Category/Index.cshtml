@@ -1,0 +1,113 @@
+﻿@page
+@model CategoryIndexModel
+@{
+    ViewData["Title"] = "Danh mục";
+}
+
+<h3>@ViewData["Title"]</h3>
+<a asp-page="Create" class="btn btn-success mb-2">Tạo mới</a>
+
+<table class="table table-bordered table-sm">
+    <thead class="table-light">
+        <tr>
+            <th>ID</th>
+            <th>Tên</th>
+            <th>Active</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model.Categories)
+        {
+            <tr>
+                <td>@c.CategoryId</td>
+                <td>@c.CategoryName</td>
+                <td>@(c.IsActive == true ? "✔" : "❌")</td>
+                <td>
+                    <a asp-page="Index" asp-route-editId="@c.CategoryId" class="btn btn-primary btn-sm">Sửa</a>
+                    <a asp-page="Index" asp-route-deleteId="@c.CategoryId" class="btn btn-danger  btn-sm">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* --- Popup Edit --- *@
+@if (Model.ShowEditModal)
+{
+    <div class="modal fade show" style="display:block;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sửa Danh mục @Model.EditId</h5>
+                    <a asp-page="Index" class="btn-close"></a>
+                </div>
+                <div class="modal-body">
+                    <form method="post"
+                          asp-page-handler="Edit"
+                          asp-route-editId="@Model.EditId">
+                        <div class="mb-3">
+                            <label asp-for="Input.CategoryName" class="form-label"></label>
+                            <input asp-for="Input.CategoryName" class="form-control" />
+                            <span asp-validation-for="Input.CategoryName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.CategoryDesciption" class="form-label"></label>
+                            <input asp-for="Input.CategoryDesciption" class="form-control" />
+                            <span asp-validation-for="Input.CategoryDesciption" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.ParentCategoryId" class="form-label"></label>
+                            <select asp-for="Input.ParentCategoryId"
+                                    class="form-select"
+                                    asp-items="Model.ParentOptions">
+                            </select>
+                            <span asp-validation-for="Input.ParentCategoryId" class="text-danger"></span>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input asp-for="Input.IsActive" class="form-check-input" id="IsActive" />
+                            <label asp-for="Input.IsActive" class="form-check-label" for="IsActive"></label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        <a asp-page="Index" class="btn btn-secondary">Hủy</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@* --- Popup Delete --- *@
+@if (Model.ShowDeleteModal)
+{
+    <div class="modal fade show" style="display:block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xóa Danh mục @Model.DeleteId</h5>
+                    <a asp-page="Index" class="btn-close"></a>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Bạn chắc chắn xóa danh mục
+                        <strong>
+                            @Model.Categories.First(x => x.CategoryId == Model.DeleteId).CategoryName
+                        </strong>?
+                    </p>
+                    <form method="post"
+                          asp-page-handler="Delete"
+                          asp-route-deleteId="@Model.DeleteId">
+                        <button type="submit" class="btn btn-danger">Xóa</button>
+                        <a asp-page="Index" class="btn btn-secondary">Hủy</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

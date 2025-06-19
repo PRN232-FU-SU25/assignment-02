@@ -1,0 +1,11 @@
+﻿@page "{id}"
+@model NewsDeleteModel
+@{
+	ViewData["Title"] = "Xóa Tin";
+}
+<h3>@ViewData["Title"] - @Model.News.NewsArticleId</h3>
+<p>Bạn chắc chắn muốn xóa tin <strong>@Model.News.NewsTitle</strong>?</p>
+<form method="post">
+	<button type="submit" class="btn btn-danger">Xóa</button>
+	<a asp-page="Index" class="btn btn-secondary">Hủy</a>
+</form>

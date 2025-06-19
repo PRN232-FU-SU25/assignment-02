@@ -1,0 +1,33 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Tin tức";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<table class="table table-bordered table-sm">
+    <thead class="table-light">
+        <tr>
+            <th>Tiêu đề</th>
+            <th>Headline</th>
+            <th>Danh mục</th>
+            <th>Người tạo</th>
+            <th>Ngày tạo</th>
+            <th>Nguồn</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var n in Model.NewsList)
+        {
+            <tr>
+                <td>@n.NewsTitle</td>
+                <td>@n.Headline</td>
+                <td>@n.Category</td>
+                <td>@n.CreatedBy</td>
+                <td>@(n.CreatedDate?.ToString("yyyy-MM-dd"))</td>
+                <td>@n.NewsSource</td>
+            </tr>
+        }
+    </tbody>
+</table>
