@@ -108,10 +108,11 @@ namespace Services.Services
             {
                 throw new KeyNotFoundException("không tìm thấy tài khoản");
             }
+
             account.AccountEmail = dto.AccountEmail;
-            account.AccountPassword = dto.AccountPassword;
             account.AccountRole = dto.AccountRole;
             account.AccountName = dto.AccountName;
+
             await _systemAccountRepo.UpdateAsync(account);
             var res = _mapper.Map<AccountResponse>(account);
             return res;

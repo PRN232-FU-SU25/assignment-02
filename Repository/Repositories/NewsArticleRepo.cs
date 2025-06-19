@@ -40,8 +40,16 @@ namespace Repository.Repositories
                 Include(c => c.Category)
                 .ThenInclude(p => p.ParentCategory).
                 Include(a => a.CreatedBy)
-                .AsQueryable()
-                .Where(c => c.NewsStatus == true);
+                .AsQueryable();
         }
-    }
+
+		public async Task<IQueryable<NewsArticle>> GetActiveQueryable()
+		{
+			return _context.NewsArticles.
+				Include(c => c.Category)
+				.ThenInclude(p => p.ParentCategory).
+				Include(a => a.CreatedBy)
+				.AsQueryable().Where(x => x.NewsStatus == true);
+		}
+	}
 }

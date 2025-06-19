@@ -1,0 +1,31 @@
+﻿@page "{id:int}"
+@model AccountDetailsModel
+@{
+    ViewData["Title"] = "Chi tiết Tài khoản";
+}
+
+<h3>@ViewData["Title"] - @Model.Account.AccountId</h3>
+
+<dl class="row">
+    <dt class="col-sm-2">Name</dt>
+    <dd class="col-sm-10">@Model.Account.AccountName</dd>
+
+    <dt class="col-sm-2">Email</dt>
+    <dd class="col-sm-10">@Model.Account.AccountEmail</dd>
+
+    <dt class="col-sm-2">Role</dt>
+    <dd class="col-sm-10">
+        @{
+            var roleName = Model.Account.AccountRole switch
+            {
+                0 => "Admin",
+                1 => "Staff",
+                2 => "Lecturer",
+                _ => "Unknown"
+            };
+        }
+        @roleName
+    </dd>
+</dl>
+
+<a asp-page="Index" class="btn btn-secondary">Quay về</a>

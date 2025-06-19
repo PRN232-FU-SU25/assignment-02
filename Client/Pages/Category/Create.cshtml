@@ -1,0 +1,36 @@
+﻿@page
+@model CategoryCreateModel
+@{
+    ViewData["Title"] = "Tạo Danh mục";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Input.CategoryName" class="form-label"></label>
+        <input asp-for="Input.CategoryName" class="form-control" />
+        <span asp-validation-for="Input.CategoryName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.CategoryDesciption" class="form-label"></label>
+        <input asp-for="Input.CategoryDesciption" class="form-control" />
+        <span asp-validation-for="Input.CategoryDesciption" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.ParentCategoryId" class="form-label"></label>
+        <select asp-for="Input.ParentCategoryId"
+                class="form-select"
+                asp-items="Model.ParentCategoryOptions">
+            @* options được nạp từ ParentCategoryOptions *@
+        </select>
+        <span asp-validation-for="Input.ParentCategoryId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Lưu</button>
+    <a asp-page="Index" class="btn btn-secondary">Hủy</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

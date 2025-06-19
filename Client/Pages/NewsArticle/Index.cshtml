@@ -1,0 +1,96 @@
+﻿@page
+@model NewsIndexModel
+@{
+    ViewData["Title"] = "Tin tức quản lý";
+}
+
+<h3>@ViewData["Title"]</h3>
+<a asp-page="Create" class="btn btn-success mb-2">Tạo mới</a>
+
+<table class="table table-bordered table-sm">
+    <thead class="table-light">
+        <tr>
+            <th>ID</th>
+            <th>Tiêu đề</th>
+            <th>Ngày tạo</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var n in Model.NewsList)
+        {
+            <tr>
+                <td>@n.NewsArticleId</td>
+                <td>@n.NewsTitle</td>
+                <td>@(n.CreatedDate?.ToString("yyyy-MM-dd HH:mm"))</td>
+                <td>@(n.NewsStatus == true ? "Active" : "Inactive")</td>
+                <td>
+                    <a asp-page="Index" asp-route-editId="@n.NewsArticleId"
+                       class="btn btn-primary btn-sm">Sửa</a>
+                    <a asp-page="Index" asp-route-deleteId="@n.NewsArticleId"
+                       class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* --- Popup Edit --- *@
+@if (Model.ShowEditModal)
+{
+    <div class="modal fade show" style="display:block;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sửa Tin @Model.EditId</h5>
+                    <a asp-page="Index" class="btn-close"></a>
+                </div>
+                <div class="modal-body">
+                    <form method="post"
+                          asp-page-handler="Edit"
+                          asp-route-editId="@Model.EditId">
+                        @* ... các field như trước, bao gồm dropdown Category ... *@
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        <a asp-page="Index" class="btn btn-secondary">Hủy</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@* --- Popup Delete --- *@
+@if (Model.ShowDeleteModal)
+{
+    <div class="modal fade show" style="display:block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xóa Tin @Model.DeleteId</h5>
+                    <a asp-page="Index" class="btn-close"></a>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Bạn có chắc muốn xóa tin
+                        <strong>
+                            @Model.NewsList.First(x => x.NewsArticleId == Model.DeleteId).NewsTitle
+                        </strong>?
+                    </p>
+                    <form method="post"
+                          asp-page-handler="Delete"
+                          asp-route-deleteId="@Model.DeleteId">
+                        <button type="submit" class="btn btn-danger">Xóa</button>
+                        <a asp-page="Index" class="btn btn-secondary">Hủy</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

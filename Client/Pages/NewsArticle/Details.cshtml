@@ -1,0 +1,23 @@
+﻿@page "{id}"
+@model NewsDetailsModel
+@{
+	ViewData["Title"] = "Chi tiết Tin";
+}
+<h3>@ViewData["Title"] - @Model.News.NewsArticleId</h3>
+<dl class="row">
+	<dt class="col-sm-2">Tiêu đề</dt>
+	<dd class="col-sm-10">@Model.News.NewsTitle</dd>
+	<dt class="col-sm-2">Headline</dt>
+	<dd class="col-sm-10">@Model.News.Headline</dd>
+	<dt class="col-sm-2">Ngày tạo</dt>
+	<dd class="col-sm-10">@Model.News.CreatedDate?.ToString("yyyy-MM-dd")</dd>
+	<dt class="col-sm-2">Nội dung</dt>
+	<dd class="col-sm-10">@Model.News.NewsContent</dd>
+	<dt class="col-sm-2">Nguồn</dt>
+	<dd class="col-sm-10">@Model.News.NewsSource</dd>
+	<dt class="col-sm-2">Category</dt>
+	<dd class="col-sm-10">@Model.News.Category</dd>
+	<dt class="col-sm-2">Status</dt>
+	<dd class="col-sm-10">@(Model.News.NewsStatus == true ? "Active" : "Inactive")</dd>
+</dl>
+<a asp-page="Index" class="btn btn-secondary">Quay về</a>
