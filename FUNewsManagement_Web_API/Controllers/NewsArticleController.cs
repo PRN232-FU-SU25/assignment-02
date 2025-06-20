@@ -24,7 +24,6 @@ namespace FUNewsManagement_Web_API.Controllers
             _systemAccountService = systemAccountService;
 
         }
-        [Authorize(Roles = "Staff")]
         [HttpGet]
         [EnableQuery]
         public async Task<ActionResult<TResponse<NewsArticleResponse>>> GetAll()
@@ -54,6 +53,10 @@ namespace FUNewsManagement_Web_API.Controllers
         [HttpPost]
         public async Task<ActionResult<TResponse<NewsArticleResponse>>> CreateNews([FromBody] NewsArticleRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var account = await GetCurrentAccount();
             var news = await _newsArticleService.AddNewsArticleAsync(account,request);
             var res = new TResponse<NewsArticleResponse>("news created", news);
@@ -63,7 +66,13 @@ namespace FUNewsManagement_Web_API.Controllers
         [HttpPut("{id}")] 
         public async Task<ActionResult<TResponse<NewsArticleResponse>>> UpdateNews(string id,[FromBody] NewsArticleRequest request)
         {
-            var news = await _newsArticleService.UpdateNewsArticleAsync(id,request);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var account = await GetCurrentAccount();
+
+            var news = await _newsArticleService.UpdateNewsArticleAsync(account, id,request);
             var res = new TResponse<NewsArticleResponse>("news updated", news);
             return Ok(res);
         }

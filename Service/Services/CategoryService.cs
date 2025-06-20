@@ -48,7 +48,7 @@ namespace Services.Services
             var cate = await _categoryRepo.GetCategoryById(id);
             if (cate == null)
             {
-                throw new Exception("Category not found");
+                throw new KeyNotFoundException("Category not found");
             }
             var res = _mapper.Map<CategoryResponse?>(cate);
             return res;
@@ -67,7 +67,7 @@ namespace Services.Services
             var cate = await _categoryRepo.GetCategoryById(id);
             if (cate == null)
             {
-                throw new Exception("Category not found");
+                throw new KeyNotFoundException("Category not found");
             }
             _mapper.Map(dto, cate);
             await _categoryRepo.UpdateAsync(cate);

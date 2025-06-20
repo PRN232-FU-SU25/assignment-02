@@ -41,6 +41,9 @@ namespace FUNewsManagement_Web_API.Controllers
         [HttpPost]
         public async Task<ActionResult<TResponse<AccountResponse>>> CreateAccount([FromBody] AccountRequest req)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var acc = await _service.CreateAsync(req);
             var res = new TResponse<AccountResponse>("tạo tài khoản thành công", acc);
              return Ok(res);
@@ -60,6 +63,9 @@ namespace FUNewsManagement_Web_API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<TResponse<AccountResponse>>> UpdateAccount(short id, [FromBody] AccountRequest reqs)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var acc = await _service.UpdateAsync(id, reqs);
             var res = new TResponse<AccountResponse>("cập nhật tài khoản thành công", acc);
             return Ok(res);
