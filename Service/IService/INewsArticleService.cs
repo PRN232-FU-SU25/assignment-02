@@ -15,7 +15,7 @@ namespace Services.IService
         Task<List<NewsArticleResponse>> GetActiveQueryable();
 		Task<NewsArticleResponse> GetByIdAsync(string id);
         Task<NewsArticleResponse> AddNewsArticleAsync(SystemAccount acc ,NewsArticleRequest NewsArticle);
-        Task<NewsArticleResponse> UpdateNewsArticleAsync(string id,NewsArticleRequest NewsArticle);
+        Task<NewsArticleResponse> UpdateNewsArticleAsync(SystemAccount acc, string id,NewsArticleRequest NewsArticle);
         Task<(bool Success, string Message)> DeleteNewsArticleAsync(string id);
     }
 }

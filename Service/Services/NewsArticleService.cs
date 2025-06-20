@@ -30,6 +30,7 @@ namespace Services.Services
             var news = _mapper.Map<NewsArticle>(NewsArticle);
             news.NewsArticleId = id.ToString();
             news.CreatedById = acc.AccountId;
+            news.CreatedDate = DateTime.Now;
             await _newsArticleRepo.AddAsync(news);
             var res = _mapper.Map<NewsArticleResponse>(news);
             return res;
@@ -71,7 +72,7 @@ namespace Services.Services
 			return res;
 		}
 
-		public async  Task<NewsArticleResponse> UpdateNewsArticleAsync(string id ,NewsArticleRequest NewsArticle)
+		public async  Task<NewsArticleResponse> UpdateNewsArticleAsync(SystemAccount acc, string id ,NewsArticleRequest NewsArticle)
         {
             var news = await _newsArticleRepo.GetNewsArticleById(id);
             if (news == null)
@@ -85,7 +86,7 @@ namespace Services.Services
             news.NewsSource = NewsArticle.NewsSource;
             news.CategoryId = NewsArticle.CategoryId;
             news.NewsStatus = NewsArticle.NewsStatus;
-
+            news.UpdatedById = acc.AccountId;
 			await _newsArticleRepo.UpdateAsync(news);
             var res =  _mapper.Map<NewsArticleResponse>(news);
             return res;
