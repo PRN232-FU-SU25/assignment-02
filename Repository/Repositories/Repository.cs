@@ -54,7 +54,6 @@ namespace Repository.Repositories
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
-
             _dbSet.Update(entity);
             await _context.SaveChangesAsync();
         }
