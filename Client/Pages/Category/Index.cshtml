@@ -9,12 +9,17 @@
 
 <table class="table table-bordered table-sm">
     <thead class="table-light">
+    <thead class="table-light">
         <tr>
             <th>ID</th>
             <th>Tên</th>
+            <th>Mô tả</th>
+            <th>Danh mục cha</th>
             <th>Active</th>
             <th>Actions</th>
         </tr>
+    </thead>
+
     </thead>
     <tbody>
         @foreach (var c in Model.Categories)
@@ -22,14 +27,17 @@
             <tr>
                 <td>@c.CategoryId</td>
                 <td>@c.CategoryName</td>
+                <td>@c.CategoryDesciption</td>
+                <td>@(string.IsNullOrEmpty(c.ParentCategoryName) ? "--" : c.ParentCategoryName)</td>
                 <td>@(c.IsActive == true ? "✔" : "❌")</td>
                 <td>
                     <a asp-page="Index" asp-route-editId="@c.CategoryId" class="btn btn-primary btn-sm">Sửa</a>
-                    <a asp-page="Index" asp-route-deleteId="@c.CategoryId" class="btn btn-danger  btn-sm">Xóa</a>
+                    <a asp-page="Index" asp-route-deleteId="@c.CategoryId" class="btn btn-danger btn-sm">Xóa</a>
                 </td>
             </tr>
         }
     </tbody>
+
 </table>
 
 @* --- Popup Edit --- *@
@@ -53,7 +61,7 @@
                         </div>
                         <div class="mb-3">
                             <label asp-for="Input.CategoryDesciption" class="form-label"></label>
-                            <input asp-for="Input.CategoryDesciption" class="form-control" />
+                            <textarea asp-for="Input.CategoryDesciption" class="form-control"></textarea>
                             <span asp-validation-for="Input.CategoryDesciption" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
