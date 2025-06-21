@@ -70,6 +70,9 @@ namespace Services.Services
                 throw new KeyNotFoundException("Category not found");
             }
             _mapper.Map(dto, cate);
+            cate.ParentCategoryId = dto.ParentCategoryId;
+            var parent = await _categoryRepo.GetCategoryById((short)dto.ParentCategoryId);
+            cate.ParentCategory = parent;
             await _categoryRepo.UpdateAsync(cate);
             var res = _mapper.Map<CategoryResponse>(cate);
             return res;
